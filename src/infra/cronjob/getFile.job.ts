@@ -16,11 +16,14 @@ export class GetGile {
 
   }
 
+  async sleep(ms: any) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
 
   async start(): Promise<any> {
     const sunatService = new SunatService()
     // 1. INICIA JOB
-    const job = new CronJob('0 39 17 * * *', async () => {
+    const job = new CronJob('0 24 20 * * *', async () => {
 
       const fileTxt = `files/${String(process.env.FILE_NAME)}.txt`
       console.log('start ....')
@@ -34,9 +37,10 @@ export class GetGile {
       const fileres = await fs.writeFileSync(pathFile, file)
       console.log('ress --->', fileres)
       // 4. DESCOMPRIME ARCHIVO
-      compressing.zip.uncompress(pathFile, path).then(() => console.log('uncompress done')).catch((e) => console.log('uncompress error -->' + e))
+      this.sleep(1000)
+      await compressing.zip.uncompress(pathFile, path).then(() => console.log('uncompress done')).catch((e) => console.log('uncompress error -->' + e))
       let counter = 0
-
+      this.sleep(10000)
 
 
       try {
@@ -99,8 +103,8 @@ export class GetGile {
 
         // 8. ELIMINAR ARCHIVO 
         try {
-          fs.unlinkSync('file.txt');
-          fs.unlinkSync('file.txt');
+          fs.unlinkSync(fileTxt);
+          fs.unlinkSync(pathFile);
 
           console.log("Delete File successfully.");
         } catch (error) {
