@@ -1,0 +1,7 @@
+node_modules/
+.vscode/
+./.vscode/
+.localstack
+.idea
+build
+.npmrc
